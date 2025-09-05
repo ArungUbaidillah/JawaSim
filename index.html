@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Jawa Simulator</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #120020;
+      color: white;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .wheel {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: rotate(0deg);
+      transition: transform 5s cubic-bezier(.17,.67,.83,.67);
+    }
+
+    .wheel img {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      transform: translate(-50%, -50%);
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #b70000;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #218838;
+    }
+
+    /* overlay winner */
+    #overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 1000;
+      animation: fadeIn 0.5s ease;
+    }
+
+    #overlay img {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 5px solid gold;
+      object-fit: cover;
+      animation: zoomIn 0.6s ease-out;
+    }
+
+    #overlay .rarityText {
+      margin-top: 15px;
+      font-size: 22px;
+      font-weight: bold;
+      color: white;
+    }
+
+    /* tombol close overlay */
+    #overlay button {
+      margin-top: 20px;
+      padding: 8px 16px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #dc3545;
+      color: white;
+      cursor: pointer;
+    }
+
+    #overlay button:hover {
+      background: #c82333;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0.3);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Jawa Simulator</h1>
+
+  <div class="wheel" id="wheel">
+    <img src="GAMBAR/Agniya.jpg" alt="Age Tidak Cihuy" data-rarity="Common">
+    <img src="GAMBAR/Kayla.jpg" alt="Hanip Suki" data-rarity="Common">
+    <img src="GAMBAR/Queensha.jpg" alt="Jekicen Oke" data-rarity="Rare">
+    <img src="GAMBAR/Akhdan.jpg" alt="Akhdundundandindun Gemoy" data-rarity="Rare">
+    <img src="GAMBAR/Zian.jpg" alt="Zianjianjianjiancuk" data-rarity="Rare">
+    <img src="GAMBAR/Azan.jpg" alt="Ajan Lachowski" data-rarity="Rare">
+    <img src="GAMBAR/Ghiyas.jpg" alt="Gayas Jew" data-rarity="Rare">
+    <img src="GAMBAR/Raihan.jpg" alt="Rehan King Valo" data-rarity="Rare">
+    <img src="GAMBAR/Arung.jpg" alt="King JamurRung Author Sigma" data-rarity="Legendary">
+  </div>
+
+  <button id="spinBtn">Gacha your Jawa</button>
+
+  <!-- overlay pemenang -->
+  <div id="overlay">
+    <img id="winnerImg" src="" alt="">
+    <div class="rarityText" id="winnerRarity"></div>
+    <button id="closeBtn">Close</button>
+  </div>
+
+  <script>
+    const wheel = document.getElementById("wheel");
+    const spinBtn = document.getElementById("spinBtn");
+    const overlay = document.getElementById("overlay");
+    const winnerImg = document.getElementById("winnerImg");
+    const winnerRarity = document.getElementById("winnerRarity");
+    const closeBtn = document.getElementById("closeBtn");
+    const images = wheel.querySelectorAll("img");
+    const total = images.length;
+
+    // Atur posisi gambar biar melingkar
+    const radius = 160;
+    images.forEach((img, i) => {
+      const angle = (i / total) * (2 * Math.PI);
+      const x = 200 + radius * Math.cos(angle);
+      const y = 200 + radius * Math.sin(angle);
+      img.style.left = `${x}px`;
+      img.style.top = `${y}px`;
+    });
+
+    let currentRotation = 0;
+
+    spinBtn.addEventListener("click", () => {
+      overlay.style.display = "none";
+
+      // Random spin antara 5-10 putaran
+      const spin = 360 * (5 + Math.floor(Math.random() * 5)) + Math.floor(Math.random() * 360);
+      currentRotation += spin;
+      wheel.style.transition = "transform 5s cubic-bezier(.17,.67,.83,.67)";
+      wheel.style.transform = `rotate(${currentRotation}deg)`;
+
+      // Cari hasil setelah spin selesai
+      setTimeout(() => {
+        const normalized = currentRotation % 360;
+        const segmentAngle = 360 / total;
+        const index = Math.floor(((360 - normalized + segmentAngle / 2) % 360) / segmentAngle);
+        const selected = images[index];
+
+        // tampilkan overlay pemenang
+        winnerImg.src = selected.src;
+        winnerRarity.textContent = `${selected.alt} - Rarity: ${selected.dataset.rarity}`;
+        overlay.style.display = "flex";
+      }, 5000);
+    });
+
+    // tombol close overlay
+    closeBtn.addEventListener("click", () => {
+      overlay.style.display = "none";
+    });
+  </script>
+</body>
+</html>
