@@ -18,6 +18,7 @@
       color: white;
       font-family: "Poppins", sans-serif;
       overflow: hidden;
+      position: relative;
     }
 
     @keyframes gradientBG {
@@ -31,6 +32,26 @@
       font-weight: 600;
       letter-spacing: 1px;
       text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      z-index: 2;
+    }
+
+    /* bintang */
+    .stars {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      top: -10px;
+      animation: fall linear infinite;
+      opacity: 0.8;
+      border-radius: 50%;
+      z-index: 0;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
     }
 
     .wheel {
@@ -43,6 +64,7 @@
       justify-content: center;
       transform: rotate(0deg);
       transition: transform 5s cubic-bezier(.17,.67,.83,.67);
+      z-index: 2;
     }
 
     .wheel img {
@@ -75,6 +97,7 @@
       cursor: pointer;
       box-shadow: 0 5px 15px rgba(0,0,0,0.4);
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      z-index: 2;
     }
 
     button:hover {
@@ -159,6 +182,9 @@
 <body>
   <h1>Jawa Simulator</h1>
 
+  <!-- bintang -->
+  <div id="stars-container"></div>
+
   <div class="wheel" id="wheel">
     <img src="GAMBAR/Agniya.jpg" alt="Age Tidak Cihuy" data-rarity="Common">
     <img src="GAMBAR/Kayla.jpg" alt="Hanip Suki" data-rarity="Common">
@@ -190,6 +216,7 @@
     const images = wheel.querySelectorAll("img");
     const total = images.length;
 
+    // posisi gambar
     const radius = 160;
     images.forEach((img, i) => {
       const angle = (i / total) * (2 * Math.PI);
@@ -222,6 +249,17 @@
     closeBtn.addEventListener("click", () => {
       overlay.style.display = "none";
     });
+
+    // bikin bintang
+    const container = document.getElementById("stars-container");
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement("div");
+      star.classList.add("stars");
+      star.style.left = Math.random() * 100 + "vw";
+      star.style.animationDuration = 5 + Math.random() * 10 + "s";
+      star.style.animationDelay = Math.random() * 10 + "s";
+      container.appendChild(star);
+    }
   </script>
 </body>
 </html>
