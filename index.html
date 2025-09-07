@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Jawa Simulator</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
     body {
       display: flex;
@@ -12,51 +11,26 @@
       justify-content: center;
       min-height: 100vh;
       margin: 0;
-      background: #000;
+      background: #120020;
       color: white;
-      font-family: "Poppins", sans-serif;
+      font-family: Arial, sans-serif;
       overflow: hidden;
+      position: relative;
     }
 
-    /* animasi bintang */
-    .stars, .stars2, .stars3 {
+    /* canvas bintang */
+    #stars {
       position: fixed;
-      width: 100%;
-      height: 100%;
       top: 0;
       left: 0;
-      background-repeat: repeat;
-      background-size: contain;
+      width: 100%;
+      height: 100%;
       z-index: -1;
-    }
-
-    .stars {
-      background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
-      animation: moveStars 100s linear infinite;
-    }
-
-    .stars2 {
-      background-image: url("https://www.transparenttextures.com/patterns/tiny-grid.png");
-      animation: moveStars 200s linear infinite;
-      opacity: 0.4;
-    }
-
-    .stars3 {
-      background-image: url("https://www.transparenttextures.com/patterns/stardust.png");
-      animation: moveStars 300s linear infinite;
-      opacity: 0.2;
-    }
-
-    @keyframes moveStars {
-      from {background-position: 0 0;}
-      to {background-position: -10000px 5000px;}
     }
 
     h1 {
       margin-bottom: 20px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-shadow: 0 0 10px rgba(255,255,255,0.5);
+      text-shadow: 0 0 15px #fff;
     }
 
     .wheel {
@@ -79,33 +53,24 @@
       object-fit: cover;
       border: 3px solid white;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 10px rgba(255,255,255,0.6);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .wheel img:hover {
-      transform: translate(-50%, -50%) scale(1.2);
-      box-shadow: 0 0 25px rgba(255,255,255,0.9);
-      z-index: 5;
     }
 
     button {
       margin-top: 20px;
-      padding: 12px 28px;
-      font-size: 18px;
-      font-weight: 600;
+      padding: 10px 20px;
+      font-size: 16px;
       border: none;
-      border-radius: 12px;
-      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      border-radius: 10px;
+      background: #b70000;
       color: white;
       cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 0 10px #ff0000;
+      transition: 0.3s;
     }
 
     button:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+      background: #218838;
+      box-shadow: 0 0 20px #00ff00;
     }
 
     /* overlay winner */
@@ -115,7 +80,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.8);
       display: none;
       align-items: center;
       justify-content: center;
@@ -125,68 +90,51 @@
     }
 
     #overlay img {
-      width: 220px;
-      height: 220px;
+      width: 200px;
+      height: 200px;
       border-radius: 50%;
-      border: 6px solid gold;
+      border: 5px solid gold;
       object-fit: cover;
-      animation: zoomIn 0.6s ease-out, pulseGlow 2s infinite;
-      box-shadow: 0 0 25px rgba(255,215,0,0.9);
+      animation: zoomIn 0.6s ease-out;
     }
 
     #overlay .rarityText {
-      margin-top: 18px;
-      font-size: 24px;
-      font-weight: 600;
+      margin-top: 15px;
+      font-size: 22px;
+      font-weight: bold;
       color: white;
-      text-shadow: 0 0 8px rgba(255,255,255,0.8);
+      text-shadow: 0 0 10px gold;
     }
 
     #overlay button {
-      margin-top: 25px;
-      padding: 10px 20px;
+      margin-top: 20px;
+      padding: 8px 16px;
       font-size: 16px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
       background: #dc3545;
       color: white;
       cursor: pointer;
-      transition: background 0.3s ease, transform 0.2s ease;
     }
 
     #overlay button:hover {
       background: #c82333;
-      transform: scale(1.05);
     }
 
     @keyframes zoomIn {
-      from {
-        transform: scale(0.3);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
+      from { transform: scale(0.3); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
-    @keyframes pulseGlow {
-      0% { box-shadow: 0 0 10px gold, 0 0 20px gold; }
-      50% { box-shadow: 0 0 25px gold, 0 0 50px gold; }
-      100% { box-shadow: 0 0 10px gold, 0 0 20px gold; }
-    }
   </style>
 </head>
 <body>
-  <!-- background bintang -->
-  <div class="stars"></div>
-  <div class="stars2"></div>
-  <div class="stars3"></div>
+  <!-- canvas untuk bintang -->
+  <canvas id="stars"></canvas>
 
   <h1>Jawa Simulator</h1>
 
@@ -221,6 +169,7 @@
     const images = wheel.querySelectorAll("img");
     const total = images.length;
 
+    // Atur posisi gambar biar melingkar
     const radius = 160;
     images.forEach((img, i) => {
       const angle = (i / total) * (2 * Math.PI);
@@ -234,6 +183,7 @@
 
     spinBtn.addEventListener("click", () => {
       overlay.style.display = "none";
+
       const spin = 360 * (5 + Math.floor(Math.random() * 5)) + Math.floor(Math.random() * 360);
       currentRotation += spin;
       wheel.style.transition = "transform 5s cubic-bezier(.17,.67,.83,.67)";
@@ -244,6 +194,7 @@
         const segmentAngle = 360 / total;
         const index = Math.floor(((360 - normalized + segmentAngle / 2) % 360) / segmentAngle);
         const selected = images[index];
+
         winnerImg.src = selected.src;
         winnerRarity.textContent = `${selected.alt} - Rarity: ${selected.dataset.rarity}`;
         overlay.style.display = "flex";
@@ -253,6 +204,44 @@
     closeBtn.addEventListener("click", () => {
       overlay.style.display = "none";
     });
+
+    // STARFIELD
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      stars = [];
+      for (let i = 0; i < 150; i++) {
+        stars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 1.5,
+          alpha: Math.random(),
+          speed: 0.002 + Math.random() * 0.002
+        });
+      }
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let s of stars) {
+        s.alpha += s.speed * (Math.random() > 0.5 ? 1 : -1);
+        if (s.alpha < 0) s.alpha = 0;
+        if (s.alpha > 1) s.alpha = 1;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255," + s.alpha + ")";
+        ctx.fill();
+      }
+      requestAnimationFrame(drawStars);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    drawStars();
   </script>
 </body>
 </html>
