@@ -41,17 +41,10 @@
       width: 2px;
       height: 2px;
       background: white;
-      top: -10px;
-      animation: fall linear infinite;
+      top: 0;
       opacity: 0.8;
       border-radius: 50%;
       z-index: 0;
-    }
-
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-      }
     }
 
     .wheel {
@@ -409,14 +402,13 @@
       overlay.style.display = "none";
     });
 
-    // bikin bintang
+    // bikin bintang (tetep tapi ga gerak)
     const container = document.getElementById("stars-container");
     for (let i = 0; i < 100; i++) {
       const star = document.createElement("div");
       star.classList.add("stars");
       star.style.left = Math.random() * 100 + "vw";
-      star.style.animationDuration = 5 + Math.random() * 10 + "s";
-      star.style.animationDelay = Math.random() * 10 + "s";
+      star.style.top = Math.random() * 100 + "vh";
       container.appendChild(star);
     }
 
