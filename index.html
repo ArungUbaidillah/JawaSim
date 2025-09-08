@@ -157,14 +157,8 @@
     }
 
     @keyframes zoomIn {
-      from {
-        transform: scale(0.3);
-        opacity: 0;
-      }
-      to {
-        transform: scale(1);
-        opacity: 1;
-      }
+      from { transform: scale(0.3); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
 
     @keyframes fadeIn {
@@ -177,10 +171,155 @@
       50% { box-shadow: 0 0 25px gold, 0 0 50px gold; }
       100% { box-shadow: 0 0 10px gold, 0 0 20px gold; }
     }
+
+    /* tanah */
+    .ground {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100px;
+      background: #8b4513;
+      background-image: 
+        linear-gradient(#a0522d 50%, #8b4513 50%), 
+        linear-gradient(90deg, #9c5c2c 50%, #8b4513 50%);
+      background-size: 50px 50px;
+      border-top: 5px solid #5c3317;
+      box-shadow: inset 0 10px 15px rgba(0,0,0,0.4);
+      z-index: 1;
+    }
+
+    /* rumput di atas tanah */
+    .ground::before {
+      content: "";
+      position: absolute;
+      top: -15px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: repeating-linear-gradient(
+        -45deg,
+        #3cb043,
+        #3cb043 10px,
+        #2e8b57 10px,
+        #2e8b57 20px
+      );
+      border-bottom: 3px solid #1f5e3a;
+    }
+
+    /* batu kecil */
+    .ground::after {
+      content: "";
+      position: absolute;
+      bottom: 10px;
+      left: 10%;
+      width: 80%;
+      height: 20px;
+      background-image: radial-gradient(circle at 10px 10px, #5c3317 3px, transparent 4px),
+                        radial-gradient(circle at 60px 15px, #5c3317 4px, transparent 5px),
+                        radial-gradient(circle at 120px 8px, #5c3317 3px, transparent 4px),
+                        radial-gradient(circle at 200px 12px, #5c3317 5px, transparent 6px),
+                        radial-gradient(circle at 300px 18px, #5c3317 3px, transparent 4px),
+                        radial-gradient(circle at 400px 10px, #5c3317 4px, transparent 5px);
+      background-repeat: repeat-x;
+    }
+
+    /* tombol shop */
+    #shopBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      z-index: 3;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(255,255,255,0.6);
+    }
+
+    /* SHOP overlay */
+    #shopOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 12, 41, 0.95);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px;
+      z-index: 2000;
+      overflow-y: auto;
+    }
+
+    #shopOverlay h2 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    .shopItems {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 800px;
+    }
+
+    .item {
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 0 12px rgba(0,0,0,0.4);
+    }
+
+    .item img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .item h3 {
+      font-size: 16px;
+      margin: 8px 0;
+    }
+
+    .item button {
+      padding: 8px 14px;
+      font-size: 14px;
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      border: none;
+      border-radius: 8px;
+      color: white;
+      cursor: pointer;
+    }
+
+    .item button:hover {
+      transform: scale(1.05);
+    }
+
+    #closeShop {
+      margin-top: 25px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background: #dc3545;
+      color: white;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <h1>Jawa Simulator</h1>
+
+  <!-- tombol shop -->
+  <img id="shopBtn" src="GAMBAR/TOKO.png" alt="Shop">
 
   <!-- bintang -->
   <div id="stars-container"></div>
@@ -198,12 +337,32 @@
   </div>
 
   <button id="spinBtn">Gacha your Jawa</button>
+  <div class="ground"></div>
 
   <!-- overlay pemenang -->
   <div id="overlay">
     <img id="winnerImg" src="" alt="">
     <div class="rarityText" id="winnerRarity"></div>
     <button id="closeBtn">Close</button>
+  </div>
+
+  <!-- SHOP overlay -->
+  <div id="shopOverlay">
+    <h2>ITEM PARA SUKI</h2>
+    <div class="shopItems">
+      <!-- contoh item -->
+      <div class="item">
+        <img src="GAMBAR/item1.png" alt="Item 1">
+        <h3>Item 1</h3>
+        <button>Beli</button>
+      </div>
+      <div class="item">
+        <img src="GAMBAR/item2.png" alt="Item 2">
+        <h3>Item 2</h3>
+        <button>Beli</button>
+      </div>
+    </div>
+    <button id="closeShop">Close Shop</button>
   </div>
 
   <script>
@@ -260,6 +419,19 @@
       star.style.animationDelay = Math.random() * 10 + "s";
       container.appendChild(star);
     }
+
+    // SHOP logic
+    const shopBtn = document.getElementById("shopBtn");
+    const shopOverlay = document.getElementById("shopOverlay");
+    const closeShop = document.getElementById("closeShop");
+
+    shopBtn.addEventListener("click", () => {
+      shopOverlay.style.display = "flex";
+    });
+
+    closeShop.addEventListener("click", () => {
+      shopOverlay.style.display = "none";
+    });
   </script>
 </body>
 </html>
