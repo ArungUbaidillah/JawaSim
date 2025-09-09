@@ -41,7 +41,7 @@
       width: 2px;
       height: 2px;
       background: white;
-      top: 0;
+      top: -10px;
       opacity: 0.8;
       border-radius: 50%;
       z-index: 0;
@@ -165,56 +165,21 @@
       100% { box-shadow: 0 0 10px gold, 0 0 20px gold; }
     }
 
-    /* tanah */
+    /* tanah retro ala Mario */
     .ground {
-      position: absolute;
+      position: fixed;
       bottom: 0;
       left: 0;
       width: 100%;
-      height: 100px;
-      background: #8b4513;
-      background-image: 
-        linear-gradient(#a0522d 50%, #8b4513 50%), 
-        linear-gradient(90deg, #9c5c2c 50%, #8b4513 50%);
-      background-size: 50px 50px;
-      border-top: 5px solid #5c3317;
-      box-shadow: inset 0 10px 15px rgba(0,0,0,0.4);
+      height: 120px;
+      background: 
+        linear-gradient(45deg, #6b4226 25%, transparent 25%) -10px 0,
+        linear-gradient(-45deg, #6b4226 25%, transparent 25%) -10px 0,
+        linear-gradient(45deg, transparent 75%, #6b4226 75%),
+        linear-gradient(-45deg, transparent 75%, #6b4226 75%);
+      background-size: 40px 40px;
+      background-color: #8b5a2b;
       z-index: 1;
-    }
-
-    /* rumput di atas tanah */
-    .ground::before {
-      content: "";
-      position: absolute;
-      top: -15px;
-      left: 0;
-      width: 100%;
-      height: 20px;
-      background: repeating-linear-gradient(
-        -45deg,
-        #3cb043,
-        #3cb043 10px,
-        #2e8b57 10px,
-        #2e8b57 20px
-      );
-      border-bottom: 3px solid #1f5e3a;
-    }
-
-    /* batu kecil */
-    .ground::after {
-      content: "";
-      position: absolute;
-      bottom: 10px;
-      left: 10%;
-      width: 80%;
-      height: 20px;
-      background-image: radial-gradient(circle at 10px 10px, #5c3317 3px, transparent 4px),
-                        radial-gradient(circle at 60px 15px, #5c3317 4px, transparent 5px),
-                        radial-gradient(circle at 120px 8px, #5c3317 3px, transparent 4px),
-                        radial-gradient(circle at 200px 12px, #5c3317 5px, transparent 6px),
-                        radial-gradient(circle at 300px 18px, #5c3317 3px, transparent 4px),
-                        radial-gradient(circle at 400px 10px, #5c3317 4px, transparent 5px);
-      background-repeat: repeat-x;
     }
 
     /* tombol shop */
@@ -312,7 +277,7 @@
   <h1>Jawa Simulator</h1>
 
   <!-- tombol shop -->
-  <img id="shopBtn" src="GAMBAR/TOKO.png" alt="Shop">
+  <img id="shopBtn" src="GAMBAR/shop.png" alt="Shop">
 
   <!-- bintang -->
   <div id="stars-container"></div>
@@ -341,7 +306,7 @@
 
   <!-- SHOP overlay -->
   <div id="shopOverlay">
-    <h2>ITEM PARA SUKI</h2>
+    <h2>Shop</h2>
     <div class="shopItems">
       <!-- contoh item -->
       <div class="item">
@@ -402,7 +367,7 @@
       overlay.style.display = "none";
     });
 
-    // bikin bintang (tetep tapi ga gerak)
+    // bikin bintang (statik, biar gak lag)
     const container = document.getElementById("stars-container");
     for (let i = 0; i < 100; i++) {
       const star = document.createElement("div");
